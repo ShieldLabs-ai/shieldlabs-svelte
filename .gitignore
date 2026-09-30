@@ -1,0 +1,21 @@
+# Dependencies and build output
+node_modules/
+dist/
+coverage/
+*.tgz
+*.log
+
+# SvelteKit and adapter output (examples)
+.svelte-kit/
+build/
+
+# Local environment
+.env
+.env.*
+!.env.example
+
+# Editors and OS
+.DS_Store
+.history/
+.idea/
+.vscode/
