@@ -1,4 +1,4 @@
-# Contributing to @shieldlabs/svelte
+# Contributing to @shieldlabs-ai/svelte
 
 Thank you for improving the ShieldLabs bindings for Svelte and SvelteKit.
 
@@ -13,27 +13,27 @@ npm ci && npm run build && npm pack
 
 # in this repository
 npm ci
-npm install --no-save ../shieldlabs-js/shieldlabs-js-1.0.0.tgz
+npm install --no-save ../shieldlabs-js/shieldlabs-ai-js-1.0.0.tgz
 ```
 
 Repeat the last command after every `npm ci`, which removes packages that are not in the lockfile.
 
 ### Why there is an `.npmrc`
 
-`@shieldlabs/js` is a peer dependency and is not on the npm registry yet. npm installs peer
+`@shieldlabs-ai/js` is a peer dependency and is not on the npm registry yet. npm installs peer
 dependencies automatically, so without the committed `.npmrc` every `npm ci` fails with a 404 for
-`@shieldlabs/js`. It sets:
+`@shieldlabs-ai/js`. It sets:
 
 - `legacy-peer-deps=true`: npm leaves peer dependencies out of the install (`svelte` is also a dev
   dependency, so it is installed anyway).
-- `save-dev=true`: `npm install --no-save <tarball>` installs the packed `@shieldlabs/js`. With
+- `save-dev=true`: `npm install --no-save <tarball>` installs the packed `@shieldlabs-ai/js`. With
   `legacy-peer-deps` alone npm would leave it out too, because the package lists it as a peer
   dependency, and answer "up to date". A side effect: `npm install <package>` adds a dev dependency
   by default, which suits a package whose only runtime dependencies are its peers.
 
 Never commit a `file:` dependency or a tarball.
 
-Once `@shieldlabs/js` 1.x is published: delete `.npmrc`, add `"@shieldlabs/js": "^1.0.0"` to
+Once `@shieldlabs-ai/js` 1.x is published: delete `.npmrc`, add `"@shieldlabs-ai/js": "^1.0.0"` to
 `devDependencies`, and remove the pack and install steps from this file, the README and the CI
 workflow.
 
@@ -51,14 +51,14 @@ npm run build   # svelte-package and publint
 
 The tests run in two Vitest projects: `dom` (jsdom, Svelte's browser runtime) and `ssr` (Node.js,
 components rendered with `svelte/server`). `test/integration.test.ts` uses the real
-`@shieldlabs/js` loader and replaces only the hosted agent module that it imports from the CDN.
+`@shieldlabs-ai/js` loader and replaces only the hosted agent module that it imports from the CDN.
 
 To try the example, see [examples/sveltekit/README.md](./examples/sveltekit/README.md). Delete its
 `node_modules`, `.svelte-kit` and `build` folders afterwards.
 
 ## Guidelines
 
-- The package stays a thin layer over `@shieldlabs/js`: load the agent only through its `load()`,
+- The package stays a thin layer over `@shieldlabs-ai/js`: load the agent only through its `load()`,
   never import or bundle the agent yourself, and never touch `window` or `document` outside
   `onMount` and the calls a user makes.
 - Never identify on render, in an effect or on navigation. Every identification is billable and
@@ -71,17 +71,17 @@ To try the example, see [examples/sveltekit/README.md](./examples/sveltekit/READ
 
 ## Releasing
 
-Publish `@shieldlabs/js` first. Then update the version in `package.json`, move the "Unreleased"
+Publish `@shieldlabs-ai/js` first. Then update the version in `package.json`, move the "Unreleased"
 changelog entries under the new version, and push a tag such as `v1.0.1`. The release workflow has
 two jobs:
 
-- `build` runs all checks against the published `@shieldlabs/js` and packs the package.
+- `build` runs all checks against the published `@shieldlabs-ai/js` and packs the package.
 - `publish` runs in the `npm` environment and publishes that tarball with provenance, using the
   `NPM_TOKEN` secret. Add required reviewers to the environment in the repository settings to
   approve each release.
 
 The workflow is safe to re-run: a version that is already on npm is not published again. When the
-tag was pushed before `@shieldlabs/js` was on npm, re-run the workflow once it is.
+tag was pushed before `@shieldlabs-ai/js` was on npm, re-run the workflow once it is.
 
 ## Security
 

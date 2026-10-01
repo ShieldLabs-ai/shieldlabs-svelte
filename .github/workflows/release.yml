@@ -27,9 +27,9 @@ jobs:
         run: test "v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
       - run: npm ci
       # Checks, tests and type declarations use the published peer dependency: publish
-      # @shieldlabs/js before tagging a release of this package (or re-run this workflow after it).
-      - name: Install the published @shieldlabs/js
-        run: npm install --no-save "@shieldlabs/js@^1.0.0"
+      # @shieldlabs-ai/js before tagging a release of this package (or re-run this workflow after it).
+      - name: Install the published @shieldlabs-ai/js
+        run: npm install --no-save "@shieldlabs-ai/js@^1.0.0"
       - run: npm run check
       - run: npm run lint
       - run: npm test
@@ -39,7 +39,7 @@ jobs:
       - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:
           name: package
-          path: shieldlabs-svelte-*.tgz
+          path: shieldlabs-ai-svelte-*.tgz
           if-no-files-found: error
           overwrite: true
 
@@ -68,8 +68,8 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         run: |
           version="${GITHUB_REF_NAME#v}"
-          if [ "$(npm view "@shieldlabs/svelte@$version" version 2>/dev/null)" = "$version" ]; then
-            echo "@shieldlabs/svelte@$version is already on npm: nothing to publish."
+          if [ "$(npm view "@shieldlabs-ai/svelte@$version" version 2>/dev/null)" = "$version" ]; then
+            echo "@shieldlabs-ai/svelte@$version is already on npm: nothing to publish."
             exit 0
           fi
-          npm publish "./shieldlabs-svelte-$version.tgz" --provenance --access public
+          npm publish "./shieldlabs-ai-svelte-$version.tgz" --provenance --access public

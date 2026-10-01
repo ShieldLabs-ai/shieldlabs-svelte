@@ -5,7 +5,7 @@ import {
   type IdentifyResult,
   type LoadOptions,
   type ShieldLabsAgent,
-} from '@shieldlabs/js';
+} from '@shieldlabs-ai/js';
 import { getContext, onMount, setContext } from 'svelte';
 import { readonly, writable, type Readable } from 'svelte/store';
 import { toShieldLabsError } from './errors.js';
@@ -23,7 +23,7 @@ export interface CheckOnLoadOptions {
   userId?: string;
 }
 
-/** Options of {@link setShieldLabs}: the `@shieldlabs/js` load options plus `checkOnLoad` and `autoLoad`. */
+/** Options of {@link setShieldLabs}: the `@shieldlabs-ai/js` load options plus `checkOnLoad` and `autoLoad`. */
 export interface ShieldLabsOptions extends LoadOptions {
   /**
    * Runs `check()` once when the agent is ready, for passive monitoring of the visit, unless an
@@ -72,7 +72,7 @@ export interface ShieldLabsContext {
    */
   readonly load: () => void;
   /**
-   * The agent of `@shieldlabs/js` once it is loaded, for example for
+   * The agent of `@shieldlabs-ai/js` once it is loaded, for example for
    * `agent.identifyOnInteraction(form)`. Loads it like a call does, or with `autoLoad: false` waits
    * for `load()`. It has no timeout of its own, and rejects with the error of a load that failed or
    * timed out (the setup `timeout`), also when the agent arrives later.
@@ -127,7 +127,7 @@ function autoLoadOf(options: unknown): boolean {
   return !isObject(options) || options.autoLoad === undefined || options.autoLoad === true;
 }
 
-/** `load()` of `@shieldlabs/js`, rejecting with a `ShieldLabsError` whatever goes wrong. */
+/** `load()` of `@shieldlabs-ai/js`, rejecting with a `ShieldLabsError` whatever goes wrong. */
 function loadAgent(options: LoadOptions): Promise<ShieldLabsAgent> {
   return new Promise<ShieldLabsAgent>((resolve) => {
     resolve(load(options));
@@ -162,7 +162,7 @@ interface RunningCall {
  * Sets up ShieldLabs for this component and its children. Call it once during initialisation of
  * your root component (in SvelteKit, the root `+layout.svelte`). The agent starts loading when the
  * component mounts in the browser, never during server-side rendering, and loading goes through the
- * memoized `load()` of `@shieldlabs/js`, so mounting twice imports the agent once. With
+ * memoized `load()` of `@shieldlabs-ai/js`, so mounting twice imports the agent once. With
  * `autoLoad: false` it starts loading only when `load()` is called.
  *
  * The options are read once. Pass a function that returns them to use props such as `data`

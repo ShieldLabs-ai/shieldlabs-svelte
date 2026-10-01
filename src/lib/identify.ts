@@ -1,4 +1,4 @@
-import type { IdentifyOptions, IdentifyResult, ShieldLabsError } from '@shieldlabs/js';
+import type { IdentifyOptions, IdentifyResult, ShieldLabsError } from '@shieldlabs-ai/js';
 import { onMount } from 'svelte';
 import { readonly, writable, type Readable } from 'svelte/store';
 import { getShieldLabsState } from './context.js';
@@ -51,7 +51,7 @@ type Trigger = 'call' | 'mount';
 /**
  * The options for the agent: the call options over the helper options, without `runOnMount`.
  * Options that are not an object (possible without TypeScript, for example a bare User HID) reach
- * the agent unchanged, so that `@shieldlabs/js` rejects them with `invalid_options` instead of
+ * the agent unchanged, so that `@shieldlabs-ai/js` rejects them with `invalid_options` instead of
  * running an anonymous identification.
  */
 function agentOptionsOf(helperOptions: unknown, callOptions: unknown): unknown {
@@ -66,14 +66,14 @@ function agentOptionsOf(helperOptions: unknown, callOptions: unknown): unknown {
  * a `timeout` run with `defaultTimeout` (the setup `timeout`), so they count with that one.
  */
 function keyOf(options: unknown, defaultTimeout: number): string {
-  // Refused by @shieldlabs/js with invalid_options: never shared with a run that can succeed.
+  // Refused by @shieldlabs-ai/js with invalid_options: never shared with a run that can succeed.
   if (!isObject(options)) return 'invalid:' + typeof options;
   const { userId } = options;
   let user: string;
   if (userId === undefined || userId === null) user = 'anonymous';
-  // Anything but a string is refused by @shieldlabs/js with invalid_options.
+  // Anything but a string is refused by @shieldlabs-ai/js with invalid_options.
   else user = typeof userId === 'string' ? 'user:' + userId : 'other:' + typeof userId;
-  // A timeout that @shieldlabs/js refuses keeps its type, so that it is never shared with a valid one.
+  // A timeout that @shieldlabs-ai/js refuses keeps its type, so that it is never shared with a valid one.
   const timeout: unknown = options.timeout === undefined ? defaultTimeout : options.timeout;
   return JSON.stringify([user, typeof timeout, String(timeout)]);
 }

@@ -1,5 +1,5 @@
 /**
- * A stand-in for the hosted agent module that `@shieldlabs/js` imports from the CDN, with the
+ * A stand-in for the hosted agent module that `@shieldlabs-ai/js` imports from the CDN, with the
  * callback contract of the real one: four exports, only `options.onInitialized` is read, and the
  * callback runs asynchronously, exactly once per call, with `{ status: 'initialized', requestID }`.
  * Force calls always run; non-force calls run once per five-minute window.

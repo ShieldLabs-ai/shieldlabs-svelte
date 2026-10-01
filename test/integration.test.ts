@@ -1,5 +1,5 @@
 /**
- * The bindings with the real `@shieldlabs/js` loader. Only the hosted agent modules that the loader
+ * The bindings with the real `@shieldlabs-ai/js` loader. Only the hosted agent modules that the loader
  * imports from the CDN at runtime are replaced, by stand-ins with the agent's callback contract.
  *
  * The loader memoizes each import for the whole file, so the tests compare counts with the values
@@ -109,7 +109,7 @@ function renderApp(options: ShieldLabsOptions, identifyOptions?: UseIdentifyOpti
   return { view, context, helper };
 }
 
-describe('with the real @shieldlabs/js loader', () => {
+describe('with the real @shieldlabs-ai/js loader', () => {
   it('rejects an invalid Public Key before importing anything, and says so in the console once', async () => {
     const warn = vi.spyOn(console, 'warn').mockImplementation(() => undefined);
     const before = hosted.imports;

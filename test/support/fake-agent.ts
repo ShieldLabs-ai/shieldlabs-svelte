@@ -1,4 +1,4 @@
-import { ShieldLabsError, type IdentifyOptions, type IdentifyResult, type load, type ShieldLabsAgent } from '@shieldlabs/js';
+import { ShieldLabsError, type IdentifyOptions, type IdentifyResult, type load, type ShieldLabsAgent } from '@shieldlabs-ai/js';
 import { tick } from 'svelte';
 import { vi, type Mock } from 'vitest';
 
@@ -54,7 +54,7 @@ export function deferred<T>(): Deferred<T> {
   return { promise, resolve, reject };
 }
 
-/** The error of a load that timed out, as `@shieldlabs/js` words it. */
+/** The error of a load that timed out, as `@shieldlabs-ai/js` words it. */
 export function loadTimedOut(ms = 10000): ShieldLabsError {
   return new ShieldLabsError('timeout', 'The ShieldLabs agent did not load within ' + String(ms) + ' ms.');
 }

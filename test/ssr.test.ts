@@ -2,7 +2,7 @@
  * Server-side rendering: no window, no document. Components are compiled for the server and
  * rendered with svelte/server, as SvelteKit does.
  */
-import { load } from '@shieldlabs/js';
+import { load } from '@shieldlabs-ai/js';
 import { get } from 'svelte/store';
 import { render } from 'svelte/server';
 import { describe, expect, it, vi } from 'vitest';
@@ -12,8 +12,8 @@ import LegacyApp from './components/LegacyApp.svelte';
 import Orphan from './components/Orphan.svelte';
 import { PUBLIC_KEY, USER_HID } from './support/fake-agent.js';
 
-vi.mock('@shieldlabs/js', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@shieldlabs/js')>();
+vi.mock('@shieldlabs-ai/js', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@shieldlabs-ai/js')>();
   return { ...actual, load: vi.fn(actual.load) };
 });
 

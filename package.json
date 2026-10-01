@@ -1,5 +1,5 @@
 {
-  "name": "@shieldlabs/svelte",
+  "name": "@shieldlabs-ai/svelte",
   "version": "1.0.0",
   "description": "Svelte 5 and SvelteKit bindings for ShieldLabs device intelligence: load the agent once, track its state and get a request ID for every identification.",
   "keywords": [
@@ -52,7 +52,7 @@
     "prepublishOnly": "npm run build"
   },
   "peerDependencies": {
-    "@shieldlabs/js": "^1.0.0",
+    "@shieldlabs-ai/js": "^1.0.0",
     "svelte": "^5.0.0"
   },
   "devDependencies": {

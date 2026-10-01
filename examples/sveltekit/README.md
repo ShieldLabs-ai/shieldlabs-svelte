@@ -32,7 +32,7 @@ development domain to see results in the [analytics dashboard](https://app.shiel
 
 ## Build against local copies of the packages
 
-Before `@shieldlabs/svelte` and `@shieldlabs/js` are on npm, build both and install the packed
+Before `@shieldlabs-ai/svelte` and `@shieldlabs-ai/js` are on npm, build both and install the packed
 files instead of `npm install`:
 
 ```bash
@@ -43,7 +43,7 @@ npm ci && npm run build && npm pack
 npm run build && npm pack
 
 cd examples/sveltekit
-npm install --no-save --no-package-lock ../../shieldlabs-svelte-1.0.0.tgz ../../../shieldlabs-js/shieldlabs-js-1.0.0.tgz
+npm install --no-save --no-package-lock ../../shieldlabs-ai-svelte-1.0.0.tgz ../../../shieldlabs-js/shieldlabs-ai-js-1.0.0.tgz
 PUBLIC_SHIELDLABS_PUBLIC_KEY=0123456789abcdef0123456789abcdef npm run build
 npm run check
 ```

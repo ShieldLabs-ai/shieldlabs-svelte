@@ -10,9 +10,9 @@ export default defineConfig({
     unstubGlobals: true,
     server: {
       deps: {
-        // Process @shieldlabs/js with Vite so that test/integration.test.ts can replace the
+        // Process @shieldlabs-ai/js with Vite so that test/integration.test.ts can replace the
         // hosted agent module that the loader imports from the CDN at runtime.
-        inline: ['@shieldlabs/js'],
+        inline: ['@shieldlabs-ai/js'],
       },
     },
     projects: [

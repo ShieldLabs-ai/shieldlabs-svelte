@@ -10,8 +10,8 @@
     "check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --fail-on-warnings"
   },
   "dependencies": {
-    "@shieldlabs/js": "^1.0.0",
-    "@shieldlabs/svelte": "^1.0.0"
+    "@shieldlabs-ai/js": "^1.0.0",
+    "@shieldlabs-ai/svelte": "^1.0.0"
   },
   "devDependencies": {
     "@sveltejs/adapter-node": "^5.5.7",

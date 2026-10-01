@@ -1,6 +1,6 @@
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { useIdentify } from '@shieldlabs/svelte';
+  import { useIdentify } from '@shieldlabs-ai/svelte';
   import type { SubmitFunction } from '@sveltejs/kit';
   import type { PageProps } from './$types';
 

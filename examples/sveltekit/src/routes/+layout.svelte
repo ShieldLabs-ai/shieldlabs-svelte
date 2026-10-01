@@ -1,6 +1,6 @@
 <script lang="ts">
   import { PUBLIC_SHIELDLABS_PUBLIC_KEY } from '$env/static/public';
-  import { setShieldLabs } from '@shieldlabs/svelte';
+  import { setShieldLabs } from '@shieldlabs-ai/svelte';
   import type { LayoutProps } from './$types';
 
   const { children }: LayoutProps = $props();

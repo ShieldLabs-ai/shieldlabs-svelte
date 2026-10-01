@@ -1,4 +1,4 @@
-import { load, ShieldLabsError, type ShieldLabsAgent } from '@shieldlabs/js';
+import { load, ShieldLabsError, type ShieldLabsAgent } from '@shieldlabs-ai/js';
 import { render, screen } from '@testing-library/svelte';
 import { get } from 'svelte/store';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -19,8 +19,8 @@ import {
   type FakeAgent,
 } from './support/fake-agent.js';
 
-vi.mock('@shieldlabs/js', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@shieldlabs/js')>();
+vi.mock('@shieldlabs-ai/js', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@shieldlabs-ai/js')>();
   return { ...actual, load: vi.fn() };
 });
 
@@ -76,7 +76,7 @@ describe('setShieldLabs() and getShieldLabs()', () => {
     expect(get(context.error)).toBeNull();
   });
 
-  it('loads through load() of @shieldlabs/js once per mount, with the load options unchanged', async () => {
+  it('loads through load() of @shieldlabs-ai/js once per mount, with the load options unchanged', async () => {
     renderApp({
       publicKey: PUBLIC_KEY,
       environment: 'development',
@@ -644,7 +644,7 @@ describe('setShieldLabs() and getShieldLabs()', () => {
       await expect(identified).resolves.toMatchObject({ userId: null });
     });
 
-    it('is left to the agent to refuse when @shieldlabs/js would not accept it', async () => {
+    it('is left to the agent to refuse when @shieldlabs-ai/js would not accept it', async () => {
       const loading = deferred<ShieldLabsAgent>();
       loadMock.mockReturnValue(loading.promise);
       const { context } = renderApp();
@@ -1131,7 +1131,7 @@ describe('setShieldLabs() and getShieldLabs()', () => {
       );
     });
 
-    it('checks a User HID that is not a string, so that @shieldlabs/js can refuse it', async () => {
+    it('checks a User HID that is not a string, so that @shieldlabs-ai/js can refuse it', async () => {
       renderApp({ publicKey: PUBLIC_KEY, checkOnLoad: { userId: 42 as unknown as string } });
       await settle();
 

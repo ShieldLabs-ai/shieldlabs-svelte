@@ -8,9 +8,9 @@ on:
 permissions:
   contents: read
 
-# @shieldlabs/js is a peer dependency that is not on npm yet. Every job that installs this package
+# @shieldlabs-ai/js is a peer dependency that is not on npm yet. Every job that installs this package
 # checks out ShieldLabs-ai/shieldlabs-js next to it, packs it and installs the packed file without
-# saving it (see CONTRIBUTING.md). Remove those steps once @shieldlabs/js 1.x is published.
+# saving it (see CONTRIBUTING.md). Remove those steps once @shieldlabs-ai/js 1.x is published.
 
 jobs:
   test:
@@ -38,14 +38,14 @@ jobs:
           cache-dependency-path: |
             shieldlabs-svelte/package-lock.json
             shieldlabs-js/package-lock.json
-      - name: Pack @shieldlabs/js
+      - name: Pack @shieldlabs-ai/js
         working-directory: shieldlabs-js
         run: npm ci && npm run build && npm pack
       - name: Install
         working-directory: shieldlabs-svelte
         run: |
           npm ci
-          npm install --no-save ../shieldlabs-js/shieldlabs-js-*.tgz
+          npm install --no-save ../shieldlabs-js/shieldlabs-ai-js-*.tgz
       - name: Type check (svelte-check)
         working-directory: shieldlabs-svelte
         run: npm run check
@@ -80,14 +80,14 @@ jobs:
           cache-dependency-path: |
             shieldlabs-svelte/package-lock.json
             shieldlabs-js/package-lock.json
-      - name: Pack @shieldlabs/js
+      - name: Pack @shieldlabs-ai/js
         working-directory: shieldlabs-js
         run: npm ci && npm run build && npm pack
       - name: Install with the oldest Svelte of the peer dependency range
         working-directory: shieldlabs-svelte
         run: |
           npm ci
-          npm install --no-save svelte@5.0.0 ../shieldlabs-js/shieldlabs-js-*.tgz
+          npm install --no-save svelte@5.0.0 ../shieldlabs-js/shieldlabs-ai-js-*.tgz
       - name: Test
         working-directory: shieldlabs-svelte
         run: npm test
@@ -113,14 +113,14 @@ jobs:
           cache-dependency-path: |
             shieldlabs-svelte/package-lock.json
             shieldlabs-js/package-lock.json
-      - name: Pack @shieldlabs/js
+      - name: Pack @shieldlabs-ai/js
         working-directory: shieldlabs-js
         run: npm ci && npm run build && npm pack
-      - name: Pack @shieldlabs/svelte
+      - name: Pack @shieldlabs-ai/svelte
         working-directory: shieldlabs-svelte
         run: |
           npm ci
-          npm install --no-save ../shieldlabs-js/shieldlabs-js-*.tgz
+          npm install --no-save ../shieldlabs-js/shieldlabs-ai-js-*.tgz
           npm run build
           npm pack
       - name: Build and check examples/sveltekit against the packed packages
@@ -128,6 +128,6 @@ jobs:
         env:
           PUBLIC_SHIELDLABS_PUBLIC_KEY: 0123456789abcdef0123456789abcdef
         run: |
-          npm install --no-save --no-package-lock ../../shieldlabs-svelte-*.tgz ../../../shieldlabs-js/shieldlabs-js-*.tgz
+          npm install --no-save --no-package-lock ../../shieldlabs-ai-svelte-*.tgz ../../../shieldlabs-js/shieldlabs-ai-js-*.tgz
           npm run build
           npm run check

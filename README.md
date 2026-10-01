@@ -1,13 +1,13 @@
-# @shieldlabs/svelte
+# @shieldlabs-ai/svelte
 
 Svelte 5 and SvelteKit bindings for ShieldLabs: load the agent once for your app, read its state
 from stores and get a request ID for every protected action.
 
 [![CI](https://github.com/ShieldLabs-ai/shieldlabs-svelte/actions/workflows/ci.yml/badge.svg)](https://github.com/ShieldLabs-ai/shieldlabs-svelte/actions/workflows/ci.yml)
-[![npm](https://img.shields.io/npm/v/@shieldlabs/svelte)](https://www.npmjs.com/package/@shieldlabs/svelte)
+[![npm](https://img.shields.io/npm/v/@shieldlabs-ai/svelte)](https://www.npmjs.com/package/@shieldlabs-ai/svelte)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue)](./LICENSE)
 
-`@shieldlabs/svelte` is a thin layer over [`@shieldlabs/js`](https://github.com/ShieldLabs-ai/shieldlabs-js),
+`@shieldlabs-ai/svelte` is a thin layer over [`@shieldlabs-ai/js`](https://github.com/ShieldLabs-ai/shieldlabs-js),
 the browser loader that imports the hosted ShieldLabs agent from `https://cdn.shieldlabs.ai`. It
 adds a setup function for your root component, readable stores for the status of the agent and an
 identify helper with loading and error state. It is safe in SvelteKit server-side rendering and
@@ -19,7 +19,7 @@ that contains it).
 
 ## How it fits
 
-1. **Browser.** `@shieldlabs/svelte` loads the agent and runs an identification when your form is
+1. **Browser.** `@shieldlabs-ai/svelte` loads the agent and runs an identification when your form is
    submitted. The page receives a `requestId`.
 2. **Your backend.** It receives the `requestId` with the protected action (signup, login,
    checkout) and reads the verdict for it from the History API with a ShieldLabs server SDK, or
@@ -37,15 +37,15 @@ idempotent on `data.request_id`, because future retries will resend identical by
 ## Install
 
 ```bash
-npm install @shieldlabs/svelte @shieldlabs/js
+npm install @shieldlabs-ai/svelte @shieldlabs-ai/js
 ```
 
-`@shieldlabs/js` is a peer dependency: install both packages (pnpm and yarn work the same way).
+`@shieldlabs-ai/js` is a peer dependency: install both packages (pnpm and yarn work the same way).
 Your backend reads the verdicts with a [server SDK](#send-the-request-id-to-your-backend). The quick
 start uses the one for Node.js:
 
 ```bash
-npm install @shieldlabs/node
+npm install @shieldlabs-ai/node
 ```
 
 ## Quick start
@@ -61,7 +61,7 @@ SHIELDLABS_API_KEY=sec_your_private_key
 <!-- src/routes/+layout.svelte -->
 <script lang="ts">
   import { PUBLIC_SHIELDLABS_PUBLIC_KEY } from '$env/static/public';
-  import { setShieldLabs } from '@shieldlabs/svelte';
+  import { setShieldLabs } from '@shieldlabs-ai/svelte';
 
   let { children } = $props();
 
@@ -76,7 +76,7 @@ SHIELDLABS_API_KEY=sec_your_private_key
 <!-- src/routes/signup/+page.svelte -->
 <script lang="ts">
   import { enhance } from '$app/forms';
-  import { useIdentify } from '@shieldlabs/svelte';
+  import { useIdentify } from '@shieldlabs-ai/svelte';
   import type { SubmitFunction } from '@sveltejs/kit';
 
   const { identify, isLoading } = useIdentify();
@@ -97,7 +97,7 @@ SHIELDLABS_API_KEY=sec_your_private_key
 // src/routes/signup/+page.server.ts
 import { fail } from '@sveltejs/kit';
 import { SHIELDLABS_API_KEY } from '$env/static/private';
-import { ShieldLabs, ValidationError, evaluateIdentification, type Identification } from '@shieldlabs/node';
+import { ShieldLabs, ValidationError, evaluateIdentification, type Identification } from '@shieldlabs-ai/node';
 import type { Actions } from './$types';
 
 const shieldlabs = new ShieldLabs({ apiKey: SHIELDLABS_API_KEY });
@@ -152,7 +152,7 @@ Call `setShieldLabs()` during initialisation of the component at the root of you
 ```svelte
 <!-- App.svelte (Vite) -->
 <script lang="ts">
-  import { setShieldLabs } from '@shieldlabs/svelte';
+  import { setShieldLabs } from '@shieldlabs-ai/svelte';
   import SignupForm from './SignupForm.svelte';
 
   setShieldLabs({ publicKey: import.meta.env.VITE_SHIELDLABS_PUBLIC_KEY });
@@ -163,7 +163,7 @@ Call `setShieldLabs()` during initialisation of the component at the root of you
 
 The agent starts loading when that component mounts in the browser (with `autoLoad: false`, only
 when you call `load()`, see [Wait for consent](#wait-for-consent)). Loading goes through the
-memoized `load()` of `@shieldlabs/js`, so the agent is imported once per page, however often a
+memoized `load()` of `@shieldlabs-ai/js`, so the agent is imported once per page, however often a
 component mounts. Client-side navigation does not load it again, and nothing in this package
 identifies because of a re-render or a navigation: identifications run when you call `identify()`,
 or once per mount with `runOnMount`. (The agent's own limited background checks are described under
@@ -183,7 +183,7 @@ the component. `setShieldLabs()` returns the same object.
 
 ```svelte
 <script lang="ts">
-  import { getShieldLabs } from '@shieldlabs/svelte';
+  import { getShieldLabs } from '@shieldlabs-ai/svelte';
 
   const { status, error } = getShieldLabs();
 </script>
@@ -214,7 +214,7 @@ resolves `{ requestId, userId }`, or `null` when no identification was possible 
 
 ```svelte
 <script lang="ts">
-  import { useIdentify } from '@shieldlabs/svelte';
+  import { useIdentify } from '@shieldlabs-ai/svelte';
 
   const { identify, isLoading, error } = useIdentify();
 
@@ -255,7 +255,7 @@ resolves `{ requestId, userId }`, or `null` when no identification was possible 
 
 `identify()` on submit, as above, is enough for most forms. To have the identification finished by
 the time the user submits, for example before a classic full-page form post, start it on the first
-interaction with the form: `getAgent()` resolves the agent of `@shieldlabs/js`, and
+interaction with the form: `getAgent()` resolves the agent of `@shieldlabs-ai/js`, and
 `agent.identifyOnInteraction(form)` starts `identify()` on the first focus, pointer or key event
 inside the form.
 
@@ -263,7 +263,7 @@ inside the form.
 <!-- src/routes/signup/+page.svelte: a full-page form post, without use:enhance -->
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { getShieldLabs, type InteractionIdentifier } from '@shieldlabs/svelte';
+  import { getShieldLabs, type InteractionIdentifier } from '@shieldlabs-ai/svelte';
 
   const { getAgent } = getShieldLabs();
   let form: HTMLFormElement;
@@ -341,13 +341,13 @@ action or a `+server.ts` endpoint, as in the quick start.
 ### Signed-in users: pass a User HID
 
 Pass a User HID so ShieldLabs ties the identification to the account. Compute it on your server,
-for example in `+layout.server.ts` with `userHid()` of `@shieldlabs/node` (HMAC-SHA256 of your
+for example in `+layout.server.ts` with `userHid()` of `@shieldlabs-ai/node` (HMAC-SHA256 of your
 account ID with a secret key), and hand it to the page through `data`:
 
 ```ts
 // src/routes/+layout.server.ts
 import { USER_HID_SECRET } from '$env/static/private';
-import { userHid } from '@shieldlabs/node';
+import { userHid } from '@shieldlabs-ai/node';
 import type { LayoutServerLoad } from './$types';
 
 export const load: LayoutServerLoad = ({ locals }) => ({
@@ -374,7 +374,7 @@ export {};
 
 ```svelte
 <script lang="ts">
-  import { useIdentify } from '@shieldlabs/svelte';
+  import { useIdentify } from '@shieldlabs-ai/svelte';
 
   let { data } = $props();
 
@@ -386,7 +386,7 @@ export {};
 You can also pass options per call: `identify({ userId })`. A `userId` key overrides the helper's User
 HID for that call even when its value is `undefined` or `null`, which both mean anonymous; only a call
 without the key uses the helper's User HID. Never pass a raw email address, phone
-number or database ID. `@shieldlabs/js` refuses the reserved values `"anonymous"`, `"fail"`, `"-1"`
+number or database ID. `@shieldlabs-ai/js` refuses the reserved values `"anonymous"`, `"fail"`, `"-1"`
 and `"unknown"`. Omit `userId` for visitors who are not signed in.
 
 ### Identify when a page opens
@@ -433,7 +433,7 @@ once consent is given. Until then nothing loads, and `status` stays `'loading'`:
 <!-- src/routes/+layout.svelte -->
 <script lang="ts">
   import { PUBLIC_SHIELDLABS_PUBLIC_KEY } from '$env/static/public';
-  import { setShieldLabs } from '@shieldlabs/svelte';
+  import { setShieldLabs } from '@shieldlabs-ai/svelte';
   import { consent } from '$lib/consent'; // your consent state, for example a store your banner sets
 
   let { children } = $props();
@@ -489,7 +489,7 @@ does nothing on the server. A call to `identify()`, `check()` or `getAgent()` on
 
 ### Call budget, Content Security Policy and consent
 
-These are the same as for [`@shieldlabs/js`](https://github.com/ShieldLabs-ai/shieldlabs-js):
+These are the same as for [`@shieldlabs-ai/js`](https://github.com/ShieldLabs-ai/shieldlabs-js):
 
 - [Call budget](https://github.com/ShieldLabs-ai/shieldlabs-js#call-budget): identify once per
   protected action, never on every render or route change, and never clear the agent's storage.
@@ -506,10 +506,10 @@ These are the same as for [`@shieldlabs/js`](https://github.com/ShieldLabs-ai/sh
 | `setShieldLabs(options)` | Sets up ShieldLabs for the component and its children and returns the context. Call during component initialisation. `options` is a `ShieldLabsOptions` object or a function that returns one |
 | `getShieldLabs()` | The context of the nearest `setShieldLabs()`: `{ status, error, identify, check, load, getAgent }`. Call during component initialisation |
 | `useIdentify(options?)` | An identify helper: `{ result, isLoading, error, identify, reset }`. `options` is a `UseIdentifyOptions` object or a function that returns one. Call during component initialisation |
-| `ShieldLabsError` | The error class of `@shieldlabs/js`, re-exported. Has `code` and optional `cause` |
-| Types | `ShieldLabsOptions`, `CheckOnLoadOptions`, `ShieldLabsContext`, `ShieldLabsStatus`, `UseIdentifyOptions`, `IdentifyHelper`, and from `@shieldlabs/js`: `IdentifyOptions`, `IdentifyResult`, `LoadOptions`, `ShieldLabsAgent`, `InteractionIdentifier`, `ShieldLabsErrorCode` |
+| `ShieldLabsError` | The error class of `@shieldlabs-ai/js`, re-exported. Has `code` and optional `cause` |
+| Types | `ShieldLabsOptions`, `CheckOnLoadOptions`, `ShieldLabsContext`, `ShieldLabsStatus`, `UseIdentifyOptions`, `IdentifyHelper`, and from `@shieldlabs-ai/js`: `IdentifyOptions`, `IdentifyResult`, `LoadOptions`, `ShieldLabsAgent`, `InteractionIdentifier`, `ShieldLabsErrorCode` |
 
-`ShieldLabsOptions` (the `@shieldlabs/js` load options plus `checkOnLoad` and `autoLoad`)
+`ShieldLabsOptions` (the `@shieldlabs-ai/js` load options plus `checkOnLoad` and `autoLoad`)
 
 | Option | Type | Default | Description |
 |---|---|---|---|
@@ -529,7 +529,7 @@ These are the same as for [`@shieldlabs/js`](https://github.com/ShieldLabs-ai/sh
 | `identify(options?)` | `Promise<IdentifyResult>` | Waits for the agent, then runs a fresh identification. The `timeout` covers the whole call. Rejects with a `ShieldLabsError`: with `autoLoad: false` before `load()`, at once with `not_initialized` |
 | `check(options?)` | `Promise<IdentifyResult \| null>` | Waits for the agent, then runs the limited background check. The `timeout` covers the whole call. `null` when the agent skipped it, and at once with `autoLoad: false` before `load()` |
 | `load()` | `void` | Starts loading the agent: needed with `autoLoad: false`, and tries again after a failed load. Does nothing while the agent loads, once it is loaded, and during server-side rendering. Returns nothing: `status` and `error` report the load |
-| `getAgent()` | `Promise<ShieldLabsAgent>` | The agent of `@shieldlabs/js` once it is loaded, for example for `agent.identifyOnInteraction(form)`. Loads it like a call does (with `autoLoad: false`, waits for `load()`). No timeout of its own. Rejects with the error of a load that failed or timed out (the setup `timeout`) |
+| `getAgent()` | `Promise<ShieldLabsAgent>` | The agent of `@shieldlabs-ai/js` once it is loaded, for example for `agent.identifyOnInteraction(form)`. Loads it like a call does (with `autoLoad: false`, waits for `load()`). No timeout of its own. Rejects with the error of a load that failed or timed out (the setup `timeout`) |
 
 `UseIdentifyOptions`
 
@@ -551,11 +551,11 @@ These are the same as for [`@shieldlabs/js`](https://github.com/ShieldLabs-ai/sh
 
 `IdentifyResult` is `{ requestId: string; userId: string | null }`. `ShieldLabsAgent` and
 `InteractionIdentifier` are described in the
-[`@shieldlabs/js` reference](https://github.com/ShieldLabs-ai/shieldlabs-js#reference).
+[`@shieldlabs-ai/js` reference](https://github.com/ShieldLabs-ai/shieldlabs-js#reference).
 
 ## Errors and retries
 
-Every error is a `ShieldLabsError` with a `code`, passed through from `@shieldlabs/js`:
+Every error is a `ShieldLabsError` with a `code`, passed through from `@shieldlabs-ai/js`:
 
 | Where | How it shows |
 |---|---|
@@ -578,8 +578,8 @@ codes is in [Errors](https://github.com/ShieldLabs-ai/shieldlabs-js#errors).
 
 - Svelte 5.0 and later, in components with runes and in components without them. SvelteKit 2 with
   any adapter, including prerendering and server-side rendering.
-- `@shieldlabs/js` 1.x as a peer dependency.
-- Browsers: those supported by `@shieldlabs/js` (ES modules, dynamic `import()` and WebCrypto). The
+- `@shieldlabs-ai/js` 1.x as a peer dependency.
+- Browsers: those supported by `@shieldlabs-ai/js` (ES modules, dynamic `import()` and WebCrypto). The
   page must be a secure context: HTTPS, or `http://localhost` and `http://127.0.0.1` during
   development.
 - Output: ES modules with TypeScript declarations, built with `svelte-package`. No runtime
@@ -589,8 +589,8 @@ codes is in [Errors](https://github.com/ShieldLabs-ai/shieldlabs-js#errors).
 
 ```bash
 npm ci
-# @shieldlabs/js is not on npm yet: build and pack it from its repository, then
-npm install --no-save ../shieldlabs-js/shieldlabs-js-1.0.0.tgz
+# @shieldlabs-ai/js is not on npm yet: build and pack it from its repository, then
+npm install --no-save ../shieldlabs-js/shieldlabs-ai-js-1.0.0.tgz
 npm run check   # svelte-check
 npm run lint
 npm test        # with coverage (90 % or more)

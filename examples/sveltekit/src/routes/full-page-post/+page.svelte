@@ -1,6 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
-  import { getShieldLabs, type InteractionIdentifier } from '@shieldlabs/svelte';
+  import { getShieldLabs, type InteractionIdentifier } from '@shieldlabs-ai/svelte';
   import type { PageProps } from './$types';
 
   const { form }: PageProps = $props();

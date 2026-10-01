@@ -1,4 +1,4 @@
-import { load, ShieldLabsError, type IdentifyOptions, type IdentifyResult, type ShieldLabsAgent } from '@shieldlabs/js';
+import { load, ShieldLabsError, type IdentifyOptions, type IdentifyResult, type ShieldLabsAgent } from '@shieldlabs-ai/js';
 import { fireEvent, render, screen } from '@testing-library/svelte';
 import { get } from 'svelte/store';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
@@ -19,8 +19,8 @@ import {
   type FakeAgent,
 } from './support/fake-agent.js';
 
-vi.mock('@shieldlabs/js', async (importOriginal) => {
-  const actual = await importOriginal<typeof import('@shieldlabs/js')>();
+vi.mock('@shieldlabs-ai/js', async (importOriginal) => {
+  const actual = await importOriginal<typeof import('@shieldlabs-ai/js')>();
   return { ...actual, load: vi.fn() };
 });
 
@@ -227,7 +227,7 @@ describe('useIdentify()', () => {
       await helper.identify(OTHER_HID as unknown as IdentifyOptions);
       expect(agent.identify).toHaveBeenLastCalledWith(OTHER_HID);
 
-      // null counts as no call options, as in @shieldlabs/js.
+      // null counts as no call options, as in @shieldlabs-ai/js.
       await helper.identify(null as unknown as IdentifyOptions);
       expect(agent.identify).toHaveBeenLastCalledWith({ userId: USER_HID });
     });
@@ -351,7 +351,7 @@ describe('useIdentify()', () => {
       expect(agent.identify).toHaveBeenCalledTimes(2);
     });
 
-    it('never shares a run with a timeout that @shieldlabs/js refuses', async () => {
+    it('never shares a run with a timeout that @shieldlabs-ai/js refuses', async () => {
       const answer = deferred<IdentifyResult>();
       agent.identify.mockReturnValueOnce(answer.promise);
       const { helper } = renderHelper();
@@ -424,7 +424,7 @@ describe('useIdentify()', () => {
       const first = helper.identify();
       const second = helper.identify({ userId: null as unknown as string });
       expect(second).toBe(first);
-      // A number is not shared with the anonymous run (@shieldlabs/js refuses it).
+      // A number is not shared with the anonymous run (@shieldlabs-ai/js refuses it).
       const third = helper.identify({ userId: 42 as unknown as string });
       expect(third).not.toBe(first);
       // Neither are options that are not an object.
