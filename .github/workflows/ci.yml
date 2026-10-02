@@ -8,9 +8,9 @@ on:
 permissions:
   contents: read
 
-# @shieldlabs-ai/js is a peer dependency that is not on npm yet. Every job that installs this package
-# checks out ShieldLabs-ai/shieldlabs-js next to it, packs it and installs the packed file without
-# saving it (see CONTRIBUTING.md). Remove those steps once @shieldlabs-ai/js 1.x is published.
+# Every job that installs this package checks out ShieldLabs-ai/shieldlabs-js next to it, packs it
+# and installs the packed file without saving it. Local setup can use the published loader
+# (see CONTRIBUTING.md).
 
 jobs:
   test:
