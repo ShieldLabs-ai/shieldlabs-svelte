@@ -17,6 +17,8 @@ A minimal SvelteKit app with two versions of a signup form:
 
 ## Run it
 
+From this example directory, install the published packages from npm:
+
 ```bash
 npm install
 cp .env.example .env   # then set PUBLIC_SHIELDLABS_PUBLIC_KEY
@@ -32,18 +34,25 @@ development domain to see results in the [analytics dashboard](https://app.shiel
 
 ## Build against local copies of the packages
 
-Before `@shieldlabs-ai/svelte` and `@shieldlabs-ai/js` are on npm, build both and install the packed
-files instead of `npm install`:
+Use the published loader and a tarball of this checkout to test changes to the Svelte binding:
 
 ```bash
-# in the shieldlabs-js repository
-npm ci && npm run build && npm pack
-
 # in the root of this repository
+npm ci
+npm install --no-save --legacy-peer-deps=false '@shieldlabs-ai/js@^1.0.0'
 npm run build && npm pack
 
 cd examples/sveltekit
-npm install --no-save --no-package-lock ../../shieldlabs-ai-svelte-1.0.0.tgz ../../../shieldlabs-js/shieldlabs-ai-js-1.0.0.tgz
+npm install --no-save --no-package-lock ../../shieldlabs-ai-svelte-1.0.0.tgz
+PUBLIC_SHIELDLABS_PUBLIC_KEY=0123456789abcdef0123456789abcdef npm run check
 PUBLIC_SHIELDLABS_PUBLIC_KEY=0123456789abcdef0123456789abcdef npm run build
-npm run check
 ```
+
+Both commands need the Public Key because SvelteKit generates `$env/static/public` types from the
+environment. The placeholder above is for compilation only; use your registered domain's key to
+run identifications. Running the check first also generates SvelteKit's configuration for the build.
+
+Adjust the tarball filename if the package version changes. To test a loader change as well,
+build and pack it in its own checkout and pass that tarball to both install commands in place of
+the published loader (include it in the example install too). Never commit a tarball or a `file:`
+dependency.

@@ -587,10 +587,12 @@ codes is in [Errors](https://github.com/ShieldLabs-ai/shieldlabs-js#errors).
 
 ## Development
 
+From the repository root, install the development tools and the published loader. No sibling
+repository is required. Repeat the loader install after each `npm ci`.
+
 ```bash
 npm ci
-# @shieldlabs-ai/js is not on npm yet: build and pack it from its repository, then
-npm install --no-save ../shieldlabs-js/shieldlabs-ai-js-1.0.0.tgz
+npm install --no-save --legacy-peer-deps=false '@shieldlabs-ai/js@^1.0.0'
 npm run check   # svelte-check
 npm run lint
 npm test        # with coverage (90 % or more)
